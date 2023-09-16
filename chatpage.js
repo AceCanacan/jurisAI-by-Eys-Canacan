@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -25,19 +25,38 @@ const ChatPage = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [userInput, setUserInput] = React.useState('');
   const scrollViewRef = useRef(null);
-  const context = route.params.context; 
+
+  const { situation, involved, documents, expectations } = route.params;
+
 
   const setParentMessages = route.params.setMessages;
   const [messages, setMessages] = useState(route.params.messages || []);
 
+  
+  const sendBotMessage = (content) => {
+    const botMessage = { role: 'assistant', content: content };
+    setMessages(prevMessages => [...prevMessages, botMessage]);
+  };
 
   const sendMessage = async () => {
   setLoading(true);
   const userMessage = { role: 'user', content: userInput };
   const systemMessage = {
-    role: 'system',
-    content: "You are a seasoned guidance counselor with a unique ability to perfectly comprehend the thoughts and emotions of the individuals seeking your services. Your approach combines empathy, assurance, and introspective techniques, including asking carefully crafted follow-up questions to help people understand themselves better. With a background in psychotherapy, you don’t only provide support in layman’s terms but also include technical and logical context to help your clients grasp what they’re going through. This method has proven highly effective in assisting those who come to you for guidance. When someone approaches you with a question or concern, your response always begins with an affirmation to make them feel understood, followed by a thought-provoking follow-up question that guides them deeper into self-awareness and discovery."
+    role: 'assistant',
+    content: `Situation: ${situation}. involved: ${involved} documents: ${documents} expectations: ${expectations}}
+    ChatGPT, you are an empathetic legal consultant in the Philippines so focus on Philippine Laws. Your primary role is to gain a deeper understanding of the client's situation by asking relevant questions. Your objective is not to provide advice or definitive information but to probe the circumstances and gather more details about the issue at hand.
+    Ensure you build a complete picture by clarifying any ambiguities or uncertainties in the client's responses. 
+    Ask about the current status of the issue, the factors that led to the present situation, the client's thoughts and feelings, and any additional information that might be relevant to the case.
+    However, remember to respect the client's comfort and time, evaluate whether you've obtained sufficient information to understand the situation.
+    When the conversation has become extensive or you believe you've collected enough details, kindly ask the client if they have anything more they'd like to discuss or clarify. 
+    I highly emphasize that you are not here to provide any legal advice to the client, you are just there to ask questions to get details about their situation.
+
+    CHAT GPT IT IS IMPERATIVE THAT YOU DO NOT GIVE MORE THAN ONE QUESTION PER ANSWER OR MESSAGE YOU SEND.
+    DO NOT OVERWHELM THE CLIENT BY PROVIDING A BARRAGE OF QUESTIONS
+    ASK ONE QUESTION AT A TIME
+    `,
   };
+
 
   try {
     const response = await axios.post(API_URL, {
@@ -69,7 +88,9 @@ const ChatPage = ({ route, navigation }) => {
   setLoading(false);
 };
 
-
+useEffect(() => {
+  sendBotMessage("Hello! How can I assist you with your legal inquiries today?");
+}, []);
 
   const isSendDisabled = loading || !userInput.trim();
 
@@ -107,14 +128,15 @@ const ChatPage = ({ route, navigation }) => {
         />
         <TouchableOpacity disabled={isSendDisabled} onPress={sendMessage}>
             {loading ? (
-                <ActivityIndicator size="small" color="#1abc9c" />
+                <ActivityIndicator size="small" color="#a29bfe" />
             ) : (
                 <Image 
                     source={require('./send_icon.png')} 
                     style={{ 
-                        ...styles.sendButton, 
-                        opacity: isSendDisabled ? 0.5 : 1 // Adjust opacity based on whether the button is disabled
-                    }} 
+                      ...styles.sendButton, 
+                      tintColor: isSendDisabled ? 'gray' : '#6c5ce7',
+                      opacity: isSendDisabled ? 0.5 : 1 
+                  }} 
                 />
             )}
         </TouchableOpacity>
@@ -161,7 +183,7 @@ const styles = StyleSheet.create({
   botMessageContainer: {
     alignSelf: 'flex-start',
     marginBottom: screenHeight * 0.015,
-    backgroundColor: '#d1f7d1',
+    backgroundColor: '#D6A2E8',
     borderRadius: screenWidth * 0.04,
     overflow: 'hidden',
   },

@@ -13,33 +13,58 @@ const CustomButton = ({ title, onPress, style }) => {
 };
 
 const InputPage = ({ navigation }) => {
-  const [context, setContext] = useState('');
+  const [situation, setSituation] = useState('');
+  const [involved, setInvolved] = useState('');
+  const [documents, setDocuments] = useState('');
   const [expectations, setExpectations] = useState('');
 
   const handleSubmit = () => {
-    navigation.navigate('ChatPage', { context, expectations });
+    navigation.navigate('ChatPage', { 
+      situation, 
+      involved, 
+      documents, 
+      expectations 
+    });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Context:</Text>
+      <Text style={styles.label}>Situation:</Text>
       <TextInput 
         style={styles.inputBox}
         multiline
-        scrollEnabled
-        value={context}
-        onChangeText={setContext}
-        placeholder="Describe the context of your conversation."
+        value={situation}
+        onChangeText={setSituation}
+        placeholder="Can you briefly describe the situation? What is its current status and how has it developed?"
       />
-      <Text style={styles.label}>Expectations:</Text>
+
+      <Text style={styles.label}>Parties Involved:</Text>
       <TextInput 
         style={styles.inputBox}
         multiline
-        scrollEnabled
+        value={involved}
+        onChangeText={setInvolved}
+        placeholder="Who are the parties involved in this situation? Are there any potential witnesses?"
+      />
+
+      <Text style={styles.label}>Available Documents:</Text>
+      <TextInput 
+        style={styles.inputBox}
+        multiline
+        value={documents}
+        onChangeText={setDocuments}
+        placeholder="What legal documents do you have related to this situation? Can you briefly describe their contents?"
+      />
+
+      <Text style={styles.label}>Expectation:</Text>
+      <TextInput 
+        style={styles.inputBox}
+        multiline
         value={expectations}
         onChangeText={setExpectations}
-        placeholder="What do you expect from this conversation?"
+        placeholder="What do you hope to get out of this consultation?"
       />
+
       <View style={styles.centeredContainer}>
         <CustomButton
           title="SUBMIT"
@@ -47,15 +72,15 @@ const InputPage = ({ navigation }) => {
           style={styles.submitButton}
         />
       </View>
-      
     </View>
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: screenHeight * 0.01,
     alignItems: 'center', // This centers the children horizontally
     justifyContent: 'center', // This centers the children vertically
   },
@@ -70,7 +95,7 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     width: '100%', // Ensure it takes the full width
-    height: screenHeight * 0.18,
+    height: screenHeight * 0.10,
     backgroundColor: 'white',
     borderRadius: screenHeight * 0.01,
     paddingHorizontal: screenWidth * 0.04,
@@ -87,7 +112,7 @@ const styles = StyleSheet.create({
     elevation: screenHeight * 0.002,
   },
   buttonContainer: {
-    backgroundColor: '#27ae60',
+    backgroundColor: '#8e44ad',
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
