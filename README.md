@@ -2,6 +2,9 @@
 
 _An AI-powered app designed to streamline lawyer-client interactions. JurisAI aids in gathering comprehensive client information through an interactive chatbot._
 
+![Simulator Screen Shot - iPhone 14 Pro Max - 2023-09-16 at 12 21 59](https://github.com/AceCanacan/jurisAI-by-Eys-Canacan/assets/110709199/e614f6cd-e7d5-4c12-9005-b5e9b589099b)
+
+
 ## 📌 Table of Contents
 - [📖 Project Description](#-project-description)
 - [🔧 Installation](#-installation)
